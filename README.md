@@ -1,0 +1,1 @@
+# scryfall-java-api

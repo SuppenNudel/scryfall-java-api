@@ -1,5 +1,7 @@
 package de.rohmio.mtg.scryfall.api.endpoints.factories;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.concurrent.ExecutorService;
@@ -8,15 +10,19 @@ import java.util.concurrent.Future;
 import java.util.function.Consumer;
 
 import javax.ws.rs.ProcessingException;
+import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.client.AsyncInvoker;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.Invocation.Builder;
 import javax.ws.rs.client.InvocationCallback;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
+import javax.ws.rs.ext.ReaderInterceptor;
+import javax.ws.rs.ext.ReaderInterceptorContext;
 
 import org.glassfish.jersey.jackson.internal.jackson.jaxrs.json.JacksonJsonProvider;
 
@@ -28,8 +34,8 @@ public abstract class AbstractEndpoint<T> {
 
 	private static final String SCRYFALL_URI = "https://api.scryfall.com";
 	private static final MediaType MEDIA_TYPE = MediaType.APPLICATION_JSON_TYPE;
-	private static final long SCRYFALL_RATE_LIMIT = 100; // 50 to 100 milliseconds
 
+	private static final long SCRYFALL_RATE_LIMIT = 100; // 50 to 100 milliseconds
 	private static LocalDateTime lastRequestTimestamp = LocalDateTime.now().minus(SCRYFALL_RATE_LIMIT,
 			ChronoUnit.MILLIS);
 
@@ -48,6 +54,44 @@ public abstract class AbstractEndpoint<T> {
 			target = client.target(SCRYFALL_URI).register(JacksonJsonProvider.class).path(path);
 		}
 		this.resultType = resultType;
+		client.register(UploadMonitorInterceptor.class);
+	}
+
+	public class UploadMonitorInterceptor implements ReaderInterceptor {
+
+		@Override
+		public Object aroundReadFrom(ReaderInterceptorContext context) throws IOException, WebApplicationException {
+
+	        // the original outputstream jersey writes with
+	        final InputStream in = context.getInputStream();
+
+	        // you can use Jersey's target/builder properties or
+	        // special headers to set identifiers of the source of the stream
+	        // and other info needed for progress monitoring
+	        String id = (String) context.getProperty("id");
+	        long fileSize = (long) context.getProperty("fileSize");
+
+	        // subclass of counting stream which will notify my progress
+	        // indicators.
+	        context.setInputStream(new MyCountingInputStream(in, id, fileSize));
+
+	        // proceed with any other interceptors
+	        return context.proceed();
+		}
+
+	}
+
+	public class MyCountingInputStream extends InputStream {
+
+		public MyCountingInputStream(InputStream in, String id, long fileSize) {
+		}
+
+
+		@Override
+		public int read() throws IOException {
+			return 0;
+		}
+
 	}
 
 	protected AbstractEndpoint(String path, Class<T> resultClass) {
@@ -81,7 +125,8 @@ public abstract class AbstractEndpoint<T> {
 
 	public T get() throws ScryfallError {
 		waitIfNecessary();
-		return handleResponse(target.request(MEDIA_TYPE).get());
+		Builder request = target.request(MEDIA_TYPE);
+		return handleResponse(request.get());
 	}
 
 	public Future<T> getAsync() {

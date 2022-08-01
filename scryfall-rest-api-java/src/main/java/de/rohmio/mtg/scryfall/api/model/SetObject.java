@@ -1,12 +1,18 @@
 package de.rohmio.mtg.scryfall.api.model;
 
 import java.net.URI;
-import java.util.Date;
+import java.time.LocalDate;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 
 import de.rohmio.mtg.scryfall.api.model.enums.SetType;
 
 public class SetObject extends ScryfallObject {
-	
+
 	private String id;
 	private String code;
 	private String mtgo_code;
@@ -14,7 +20,10 @@ public class SetObject extends ScryfallObject {
 	private Integer tcgplayer_id;
 	private String name;
 	private SetType set_type;
-	private Date released_at;
+	@JsonFormat(pattern = "yyyy-MM-dd")
+	@JsonSerialize(using = LocalDateSerializer.class)
+	@JsonDeserialize(using = LocalDateDeserializer.class)
+	private LocalDate released_at;
 	private String block_code;
 	private String block;
 	private String parent_set_code;
@@ -26,7 +35,12 @@ public class SetObject extends ScryfallObject {
 	private URI uri;
 	private URI icon_svg_uri;
 	private URI search_uri;
-	
+	private Integer printed_size;
+
+	public Integer getPrinted_size() {
+		return printed_size;
+	}
+
 	public String getId() {
 		return id;
 	}
@@ -48,7 +62,7 @@ public class SetObject extends ScryfallObject {
 	public SetType getSet_type() {
 		return set_type;
 	}
-	public Date getReleased_at() {
+	public LocalDate getReleased_at() {
 		return released_at;
 	}
 	public String getBlock_code() {

@@ -1,9 +1,15 @@
 package de.rohmio.mtg.scryfall.api.model;
 
 import java.net.URI;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 
 import de.rohmio.mtg.scryfall.api.model.enums.BorderColor;
 import de.rohmio.mtg.scryfall.api.model.enums.Color;
@@ -34,6 +40,12 @@ public class CardObject extends CardFaceObject {
 	 */
 	private Integer multiverse_id;
 
+	private Integer penny_rank;
+
+	public Integer getPenny_rank() {
+		return penny_rank;
+	}
+
 	/*
 	 * Finds the preferred scans of cards with the specified illustration_id.
 	 */
@@ -63,10 +75,10 @@ public class CardObject extends CardFaceObject {
 	private Integer tcgplayer_id;
 	private Integer tcgplayer_etched_id;
 	private Integer cardmarket_id;
-	private URI prints_search_uri;
-	private URI rulings_uri;
-	private URI scryfall_uri;
-	private URI uri;
+	private String prints_search_uri;
+	private String rulings_uri;
+	private String scryfall_uri;
+	private String uri;
 
 	// Gameplay Fields
 
@@ -108,7 +120,11 @@ public class CardObject extends CardFaceObject {
 	private Map<ContentSite, String> purchase_uris;
 	private Rarity rarity;
 	private Map<String, String> related_uris;
-	private Date released_at;
+
+	@JsonFormat(pattern = "yyyy-MM-dd")
+	@JsonSerialize(using = LocalDateSerializer.class)
+	@JsonDeserialize(using = LocalDateDeserializer.class)
+	private LocalDate released_at;
 	private Boolean reprint;
 	private URI scryfall_set_uri;
 	private String set_name;
@@ -154,19 +170,19 @@ public class CardObject extends CardFaceObject {
 		return cardmarket_id;
 	}
 
-	public URI getPrints_search_uri() {
+	public String getPrints_search_uri() {
 		return prints_search_uri;
 	}
 
-	public URI getRulings_uri() {
+	public String getRulings_uri() {
 		return rulings_uri;
 	}
 
-	public URI getScryfall_uri() {
+	public String getScryfall_uri() {
 		return scryfall_uri;
 	}
 
-	public URI getUri() {
+	public String getUri() {
 		return uri;
 	}
 
@@ -177,7 +193,7 @@ public class CardObject extends CardFaceObject {
 	public List<CardFaceObject> getCard_faces() {
 		return card_faces;
 	}
-
+	
 	public List<Color> getColor_identity() {
 		return color_identity;
 	}
@@ -266,7 +282,7 @@ public class CardObject extends CardFaceObject {
 		return related_uris;
 	}
 
-	public Date getReleased_at() {
+	public LocalDate getReleased_at() {
 		return released_at;
 	}
 
@@ -340,210 +356,6 @@ public class CardObject extends CardFaceObject {
 
 	public Boolean getContent_warning() {
 		return content_warning;
-	}
-
-	public void setArena_id(Integer arena_id) {
-		this.arena_id = arena_id;
-	}
-
-	public void setLang(String lang) {
-		this.lang = lang;
-	}
-
-	public void setMtgo_foil_id(Integer mtgo_foil_id) {
-		this.mtgo_foil_id = mtgo_foil_id;
-	}
-
-	public void setMultiverse_ids(List<Integer> multiverse_ids) {
-		this.multiverse_ids = multiverse_ids;
-	}
-
-	public void setTcgplayer_id(Integer tcgplayer_id) {
-		this.tcgplayer_id = tcgplayer_id;
-	}
-
-	public void setCardmarket_id(Integer cardmarket_id) {
-		this.cardmarket_id = cardmarket_id;
-	}
-
-	public void setPrints_search_uri(URI prints_search_uri) {
-		this.prints_search_uri = prints_search_uri;
-	}
-
-	public void setRulings_uri(URI rulings_uri) {
-		this.rulings_uri = rulings_uri;
-	}
-
-	public void setScryfall_uri(URI scryfall_uri) {
-		this.scryfall_uri = scryfall_uri;
-	}
-
-	public void setUri(URI uri) {
-		this.uri = uri;
-	}
-
-	public void setAll_parts(List<RelatedCardObject> all_parts) {
-		this.all_parts = all_parts;
-	}
-
-	public void setCard_faces(List<CardFaceObject> card_faces) {
-		this.card_faces = card_faces;
-	}
-
-	public void setColor_identity(List<Color> color_identity) {
-		this.color_identity = color_identity;
-	}
-
-	public void setKeywords(List<String> keywords) {
-		this.keywords = keywords;
-	}
-
-	public void setEdhrec_rank(Integer edhrec_rank) {
-		this.edhrec_rank = edhrec_rank;
-	}
-
-	public void setFoil(Boolean foil) {
-		this.foil = foil;
-	}
-
-	public void setHand_modifier(String hand_modifier) {
-		this.hand_modifier = hand_modifier;
-	}
-
-	public void setLegalities(Map<Format, Legality> legalities) {
-		this.legalities = legalities;
-	}
-
-	public void setLife_modifier(String life_modifier) {
-		this.life_modifier = life_modifier;
-	}
-
-	public void setNonfoil(Boolean nonfoil) {
-		this.nonfoil = nonfoil;
-	}
-
-	public void setOversized(Boolean oversized) {
-		this.oversized = oversized;
-	}
-
-	public void setProduced_mana(List<Color> produced_mana) {
-		this.produced_mana = produced_mana;
-	}
-
-	public void setReserved(Boolean reserved) {
-		this.reserved = reserved;
-	}
-
-	public void setBooster(Boolean booster) {
-		this.booster = booster;
-	}
-
-	public void setBorder_color(BorderColor border_color) {
-		this.border_color = border_color;
-	}
-
-	public void setCard_back_id(String card_back_id) {
-		this.card_back_id = card_back_id;
-	}
-
-	public void setDigital(Boolean digital) {
-		this.digital = digital;
-	}
-
-	public void setFrame_effects(List<FrameEffect> frame_effects) {
-		this.frame_effects = frame_effects;
-	}
-
-	public void setFrame(Frame frame) {
-		this.frame = frame;
-	}
-
-	public void setFull_art(Boolean full_art) {
-		this.full_art = full_art;
-	}
-
-	public void setGames(List<Game> games) {
-		this.games = games;
-	}
-
-	public void setHighres_image(Boolean highres_image) {
-		this.highres_image = highres_image;
-	}
-
-	public void setPrices(PriceObject prices) {
-		this.prices = prices;
-	}
-
-	public void setPromo(Boolean promo) {
-		this.promo = promo;
-	}
-
-	public void setPromo_types(List<String> promo_types) {
-		this.promo_types = promo_types;
-	}
-
-	public void setPurchase_uris(Map<ContentSite, String> purchase_uris) {
-		this.purchase_uris = purchase_uris;
-	}
-
-	public void setRarity(Rarity rarity) {
-		this.rarity = rarity;
-	}
-
-	public void setRelated_uris(Map<String, String> related_uris) {
-		this.related_uris = related_uris;
-	}
-
-	public void setReleased_at(Date released_at) {
-		this.released_at = released_at;
-	}
-
-	public void setReprint(Boolean reprint) {
-		this.reprint = reprint;
-	}
-
-	public void setScryfall_set_uri(URI scryfall_set_uri) {
-		this.scryfall_set_uri = scryfall_set_uri;
-	}
-
-	public void setSet_name(String set_name) {
-		this.set_name = set_name;
-	}
-
-	public void setSet_search_uri(URI set_search_uri) {
-		this.set_search_uri = set_search_uri;
-	}
-
-	public void setSet_type(String set_type) {
-		this.set_type = set_type;
-	}
-
-	public void setSet_uri(URI set_uri) {
-		this.set_uri = set_uri;
-	}
-
-	public void setStory_spotlight(Boolean story_spotlight) {
-		this.story_spotlight = story_spotlight;
-	}
-
-	public void setTextless(Boolean textless) {
-		this.textless = textless;
-	}
-
-	public void setVariation(Boolean variation) {
-		this.variation = variation;
-	}
-
-	public void setVariation_of(String variation_of) {
-		this.variation_of = variation_of;
-	}
-
-	public void setPreview(Preview preview) {
-		this.preview = preview;
-	}
-
-	public void setContent_warning(Boolean content_warning) {
-		this.content_warning = content_warning;
 	}
 
 	public List<Finish> getFinishes() {

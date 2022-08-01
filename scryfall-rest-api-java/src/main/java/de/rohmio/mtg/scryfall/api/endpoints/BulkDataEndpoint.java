@@ -28,15 +28,15 @@ public class BulkDataEndpoint extends AbstractEndpoint<List<CardObject>> {
 	private File file;
 
 	// TODO check if cache is there before using getDownloadUrl
-	public BulkDataEndpoint(String idOrType, boolean forceUseOfCache) {
-		super(getDownloadUrl(idOrType, forceUseOfCache), new GenericType<List<CardObject>>() {}, true);
+	public BulkDataEndpoint(String idOrType, boolean useCacheIfThere) {
+		super(getDownloadUrl(idOrType, useCacheIfThere), new GenericType<List<CardObject>>() {}, true);
 		file = new File(idOrType+".json");
-		useCache(forceUseOfCache);
+		useCache(useCacheIfThere);
 	}
 
-	private static String getDownloadUrl(String idOrType, boolean forceUseOfCache) {
+	private static String getDownloadUrl(String idOrType, boolean useCacheIfThere) {
 		File file = new File(idOrType+".json");
-		if(file.exists() && forceUseOfCache) {
+		if(file.exists() && useCacheIfThere) {
 			return "not used";
 		}
 		try {

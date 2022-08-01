@@ -26,6 +26,7 @@ import javax.ws.rs.ext.ReaderInterceptorContext;
 
 import org.glassfish.jersey.jackson.internal.jackson.jaxrs.json.JacksonJsonProvider;
 
+import de.rohmio.mtg.scryfall.api.ScryfallApi;
 import de.rohmio.mtg.scryfall.api.model.ScryfallError;
 
 public abstract class AbstractEndpoint<T> {
@@ -35,8 +36,7 @@ public abstract class AbstractEndpoint<T> {
 	private static final String SCRYFALL_URI = "https://api.scryfall.com";
 	private static final MediaType MEDIA_TYPE = MediaType.APPLICATION_JSON_TYPE;
 
-	private static final long SCRYFALL_RATE_LIMIT = 100; // 50 to 100 milliseconds
-	private static LocalDateTime lastRequestTimestamp = LocalDateTime.now().minus(SCRYFALL_RATE_LIMIT,
+	private static LocalDateTime lastRequestTimestamp = LocalDateTime.now().minus(ScryfallApi.SCRYFALL_RATE_LIMIT,
 			ChronoUnit.MILLIS);
 
 	private WebTarget target;
@@ -49,10 +49,11 @@ public abstract class AbstractEndpoint<T> {
 	protected AbstractEndpoint(String path, GenericType<T> resultType, boolean absolute) {
 		Client client = ClientBuilder.newClient();
 		if(absolute) {
-			target = client.target(path).register(JacksonJsonProvider.class);
+			target = client.target(path);
 		} else {
-			target = client.target(SCRYFALL_URI).register(JacksonJsonProvider.class).path(path);
+			target = client.target(SCRYFALL_URI).path(path);
 		}
+		target = target.register(JacksonJsonProvider.class);
 		this.resultType = resultType;
 		client.register(UploadMonitorInterceptor.class);
 	}
@@ -103,7 +104,7 @@ public abstract class AbstractEndpoint<T> {
 	}
 
 	private static long between() {
-		return ChronoUnit.MILLIS.between(LocalDateTime.now(), lastRequestTimestamp.plus(SCRYFALL_RATE_LIMIT, ChronoUnit.MILLIS));
+		return ChronoUnit.MILLIS.between(LocalDateTime.now(), lastRequestTimestamp.plus(ScryfallApi.SCRYFALL_RATE_LIMIT, ChronoUnit.MILLIS));
 	}
 
 	protected static synchronized void waitIfNecessary() {

@@ -55,6 +55,9 @@ public enum Format {
 	@JsonProperty("alchemy")
 	ALCHEMY,
 
+	@JsonProperty("explorer")
+	EXPLORER,
+
 	@JsonProperty("paupercommander")
 	PAUPER_COMMANDER;
 

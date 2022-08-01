@@ -22,15 +22,4 @@ public enum Rarity {
 	@JsonProperty("special")
 	SPECIAL;
 
-	@Override
-	public String toString() {
-		try {
-			JsonProperty annotation = getClass().getField(name()).getAnnotation(JsonProperty.class);
-			return annotation.value();
-		} catch (NoSuchFieldException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-
 }

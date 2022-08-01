@@ -19,6 +19,7 @@ public class PenetrationTest {
 		for(int i=0; i<100; ++i) {
 			executor.execute(this::callScryfall);
 		}
+		executor.shutdown();
 		executor.awaitTermination(10, TimeUnit.MINUTES);
 	}
 

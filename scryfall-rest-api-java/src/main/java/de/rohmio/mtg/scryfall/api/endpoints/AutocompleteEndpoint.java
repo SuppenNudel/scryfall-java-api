@@ -19,13 +19,10 @@ public class AutocompleteEndpoint extends AbstractEndpoint<CatalogObject> {
 	}
 	
 	/**
-	 * @param format The data format to return. This method only supports json.
+	 * 
+	 * @param includeExtras If true, extra cards (tokens, planes, vanguards, etc) will be included. Defaults to false. 
+	 * @return this builder
 	 */
-//	public AutocompleteEndpoint format(String format) {
-//		target = target.queryParam("format", format);
-//		return this;
-//	}
-	
 	public AutocompleteEndpoint includeExtras(boolean includeExtras) {
 		setQueryParam("include_extras", includeExtras);
 		return this;		

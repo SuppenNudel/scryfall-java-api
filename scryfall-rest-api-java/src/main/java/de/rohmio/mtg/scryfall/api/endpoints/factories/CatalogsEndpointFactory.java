@@ -9,6 +9,8 @@ public final class CatalogsEndpointFactory {
 	
 	/**
 	 * Returns a list of all nontoken English card names in Scryfall's database. Values are updated as soon as a new card is entered for spoiler seasons.
+	 * @param catalog the type of catalog to request
+	 * @return the endpoint
 	 */
 	public CatalogsEndpoint catalog(CatalogType catalog) {
 		return new CatalogsEndpoint(catalog);

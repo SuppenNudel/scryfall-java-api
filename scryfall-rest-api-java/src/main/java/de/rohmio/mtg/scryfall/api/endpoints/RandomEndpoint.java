@@ -16,6 +16,7 @@ public class RandomEndpoint extends AbstractEndpoint<CardObject> {
 
 	/**
 	 * @param query An optional fulltext search query to filter the pool of random cards. Make sure that your parameter is properly encoded.
+	 * @return this builder
 	 */
 	public RandomEndpoint query(String query) {
 		setQueryParam("q", query);

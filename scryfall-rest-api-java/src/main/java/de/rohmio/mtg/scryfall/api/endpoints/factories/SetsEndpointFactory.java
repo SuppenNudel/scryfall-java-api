@@ -9,7 +9,7 @@ public final class SetsEndpointFactory {
 
 	/**
 	 * Returns a List object of all Sets on Scryfall.
-	 * @return
+	 * @return the endpoint
 	 */
 	public SetsEndpoint sets() {
 		return new SetsEndpoint();

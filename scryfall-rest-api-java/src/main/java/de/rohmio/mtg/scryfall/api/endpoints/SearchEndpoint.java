@@ -36,6 +36,7 @@ public class SearchEndpoint extends PagedAbstractEndpoint<CardObject> {
 
 	/**
 	 * @param unique The strategy for omitting similar cards. See below. Defaults to cards
+	 * @return this builder
 	 */
 	public SearchEndpoint unique(Unique unique) {
 		setQueryParam("unique", unique);
@@ -44,6 +45,7 @@ public class SearchEndpoint extends PagedAbstractEndpoint<CardObject> {
 	
 	/**
 	 * @param sorting The method to sort returned cards. See below. Defaults to name
+	 * @return this builder
 	 */
 	public SearchEndpoint order(Sorting sorting) {
 		setQueryParam("order", sorting);
@@ -52,6 +54,7 @@ public class SearchEndpoint extends PagedAbstractEndpoint<CardObject> {
 	
 	/**
 	 * @param direction The direction to sort cards. See below. Defaults to auto
+	 * @return this builder
 	 */
 	public SearchEndpoint dir(Direction direction) {
 		setQueryParam("dir", direction);
@@ -60,6 +63,7 @@ public class SearchEndpoint extends PagedAbstractEndpoint<CardObject> {
 	
 	/**
 	 * @param includeExtras If true, extra cards (tokens, planes, etc) will be included. Equivalent to adding include:extras to the fulltext search. Defaults to false.
+	 * @return this builder
 	 */
 	public SearchEndpoint includeExtras(boolean includeExtras) {
 		setQueryParam("include_extras", includeExtras);
@@ -68,6 +72,7 @@ public class SearchEndpoint extends PagedAbstractEndpoint<CardObject> {
 
 	/**
 	 * @param includeMultilingual If true, cards in every language supported by Scryfall will be included. Defaults to false.
+	 * @return this builder
 	 */
 	public SearchEndpoint includeMultilingual(boolean includeMultilingual) {
 		setQueryParam("include_multilingual", includeMultilingual);
@@ -76,6 +81,7 @@ public class SearchEndpoint extends PagedAbstractEndpoint<CardObject> {
 
 	/**
 	 * @param includeVariations If true, rare care variants will be included, like the Hairy Runesword. Defaults to false.
+	 * @return this builder
 	 */
 	public SearchEndpoint includeVariations(boolean includeVariations) {
 		setQueryParam("include_variations", includeVariations);
@@ -84,27 +90,12 @@ public class SearchEndpoint extends PagedAbstractEndpoint<CardObject> {
 	
 	/**
 	 * @param page The page number to return, default 1.
+	 * @return this builder
 	 */
 	@Override
 	public SearchEndpoint page(int page) {
 		setQueryParam("page", page);
 		return this;
 	}
-
-	/**
-	 * @param format The data format to return: json or csv. Defaults to json.
-	 */
-//	public SearchEndpoint format(String format) {
-//		setQueryParam("format", format);
-//		return this;
-//	}
-
-	/**
-	 * @param pretty If true, the returned JSON will be prettified. Avoid using for production code.
-	 */
-//	public SearchEndpoint pretty(boolean pretty) {
-//		setQueryParam("pretty", pretty);
-//		return this;
-//	}
 
 }

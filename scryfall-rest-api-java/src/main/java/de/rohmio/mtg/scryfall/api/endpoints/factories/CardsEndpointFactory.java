@@ -20,6 +20,7 @@ public final class CardsEndpointFactory {
 	
 	/**
 	 * @param query A fulltext search query. Make sure that your parameter is properly encoded.
+	 * @return the endpoint
 	 */
 	public SearchEndpoint search(String query) {
 		return new SearchEndpoint(query);
@@ -27,6 +28,7 @@ public final class CardsEndpointFactory {
 	
 	/**
 	 * @param cardName The exact card name to search for, case insenstive.
+	 * @return the endpoint
 	 */
 	public NamedEndpoint exactNamed(String cardName) {
 		return new NamedEndpoint(cardName, false);
@@ -34,15 +36,24 @@ public final class CardsEndpointFactory {
 	
 	/**
 	 * @param cardName A fuzzy card name to search for.
+	 * @return the endpoint
 	 */
 	public NamedEndpoint fuzzyNamed(String cardName) {
 		return new NamedEndpoint(cardName, true);
 	}
 	
+	/**
+	 * @param query the query
+	 * @return the endpoint
+	 */
 	public AutocompleteEndpoint autocomplete(String query) {
 		return new AutocompleteEndpoint(query);
 	}
 	
+	/**
+	 * 
+	 * @return the endpoint
+	 */
 	public RandomEndpoint random() {
 		return new RandomEndpoint();
 	}

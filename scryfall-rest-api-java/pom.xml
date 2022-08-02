@@ -2,14 +2,59 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>de.rohmio.mtg</groupId>
+
+	<!-- Maven Central distribution tutorial used: https://blog.10pines.com/2018/06/25/publish-artifacts-on-maven-central/ -->
+
+	<groupId>com.github.suppennudel.mtg</groupId>
 	<artifactId>scryfall-rest-api</artifactId>
-	<version>1.5.5</version>
+	<version>1.5.5-SNAPSHOT</version>
+	<packaging>jar</packaging>
+
+	<name>Scryfall Rest Api</name>
+	<description>A Java client for scryfall.com's Rest Api written with jersey</description>
+	<url>https://github.com/SuppenNudel/scryfall-java-api</url>
+
+	<licenses>
+		<license>
+			<name>MIT License</name>
+			<url>https://choosealicense.com/licenses/mit/</url>
+		</license>
+	</licenses>
+
+	<developers>
+		<developer>
+			<name>Cedric Rohm</name>
+			<email>rohm.cedric@gmail.com</email>
+			<organization>Private</organization>
+			<!-- <organizationUrl>http://www.sonatype.com</organizationUrl> -->
+		</developer>
+	</developers>
+
+	<scm>
+		<connection>scm:git:git://github.com/SuppenNudel/scryfall-java-api.git</connection>
+		<developerConnection>scm:git:ssh://github.com:SuppenNudel/scryfall-java-api.git</developerConnection>
+		<url>${project.url}</url>
+	</scm>
+
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
 	</properties>
+
+	<distributionManagement>
+		<snapshotRepository>
+			<id>ossrh</id>
+			<name>Sonatype Nexus Snapshots</name>
+			<url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
+		</snapshotRepository>
+		<repository>
+			<id>ossrh</id>
+			<name>Nexus Release Repository</name>
+			<url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+		</repository>
+	</distributionManagement>
+
 	<dependencies>
 		<!-- for handling LocalDate in json/jackson -->
 		<!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.datatype/jackson-datatype-jsr310 -->
@@ -66,6 +111,62 @@
 				<configuration>
 					<source>${maven.compiler.source}</source>
 					<target>${maven.compiler.target}</target>
+				</configuration>
+			</plugin>
+
+			<!-- Attach source jars -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<version>3.2.1</version>
+				<executions>
+					<execution>
+						<id>attach-source</id>
+						<phase>compile</phase>
+						<goals>
+							<goal>jar-no-fork</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<!-- Attach javadocs jar -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>3.4.0</version>
+				<executions>
+					<execution>
+						<id>attach-javadocs</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<!-- Sign artifacts for uploading to maven central -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-gpg-plugin</artifactId>
+				<version>3.0.1</version>
+				<executions>
+					<execution>
+						<id>sign-artifacts</id>
+						<phase>verify</phase>
+						<goals>
+							<goal>sign</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.sonatype.plugins</groupId>
+				<artifactId>nexus-staging-maven-plugin</artifactId>
+				<version>1.6.7</version>
+				<extensions>true</extensions>
+				<configuration>
+					<serverId>ossrh</serverId>
+					<nexusUrl>https://s01.oss.sonatype.org/</nexusUrl>
+					<autoReleaseAfterClose>false</autoReleaseAfterClose>
 				</configuration>
 			</plugin>
 		</plugins>

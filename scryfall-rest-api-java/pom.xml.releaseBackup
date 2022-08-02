@@ -5,9 +5,9 @@
 
 	<!-- Maven Central distribution tutorial used: https://blog.10pines.com/2018/06/25/publish-artifacts-on-maven-central/ -->
 
-	<groupId>io.github.suppennudel</groupId>
+	<groupId>com.github.suppennudel.mtg</groupId>
 	<artifactId>scryfall-rest-api</artifactId>
-	<version>1.5.5</version>
+	<version>1.5.5-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
 	<name>Scryfall Rest Api</name>
@@ -166,7 +166,7 @@
 				<configuration>
 					<serverId>ossrh</serverId>
 					<nexusUrl>https://s01.oss.sonatype.org/</nexusUrl>
-					<autoReleaseAfterClose>true</autoReleaseAfterClose>
+					<autoReleaseAfterClose>false</autoReleaseAfterClose>
 				</configuration>
 			</plugin>
 		</plugins>

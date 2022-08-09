@@ -116,7 +116,7 @@ public abstract class AbstractEndpoint<T> {
 				e.printStackTrace();
 			}
 		}
-		System.out.println(Thread.currentThread() + " will execute");
+		// System.out.println(Thread.currentThread() + " will execute");
 		lastRequestTimestamp = LocalDateTime.now();
 	}
 

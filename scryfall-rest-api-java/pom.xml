@@ -7,7 +7,7 @@
 
 	<groupId>io.github.suppennudel</groupId>
 	<artifactId>scryfall-rest-api</artifactId>
-	<version>1.5.5</version>
+	<version>1.5.6</version>
 	<packaging>jar</packaging>
 
 	<name>Scryfall Rest Api</name>
@@ -25,7 +25,7 @@
 		<developer>
 			<name>Cedric Rohm</name>
 			<email>rohm.cedric@gmail.com</email>
-			<organization>Private</organization>
+			<!-- <organization>Private</organization> -->
 			<!-- <organizationUrl>http://www.sonatype.com</organizationUrl> -->
 		</developer>
 	</developers>
@@ -33,7 +33,7 @@
 	<scm>
 		<connection>scm:git:git://github.com/SuppenNudel/scryfall-java-api.git</connection>
 		<developerConnection>scm:git:ssh://github.com:SuppenNudel/scryfall-java-api.git</developerConnection>
-		<url>${project.url}</url>
+		<url>https://github.com/SuppenNudel/scryfall-java-api</url>
 	</scm>
 
 	<properties>

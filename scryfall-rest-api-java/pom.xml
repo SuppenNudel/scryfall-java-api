@@ -7,7 +7,7 @@
 
 	<groupId>io.github.suppennudel</groupId>
 	<artifactId>scryfall-rest-api</artifactId>
-	<version>1.5.6</version>
+	<version>1.5.6-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
 	<name>Scryfall Rest Api</name>
@@ -25,7 +25,7 @@
 		<developer>
 			<name>Cedric Rohm</name>
 			<email>rohm.cedric@gmail.com</email>
-			<!-- <organization>Private</organization> -->
+			<organization>Private</organization>
 			<!-- <organizationUrl>http://www.sonatype.com</organizationUrl> -->
 		</developer>
 	</developers>
@@ -114,9 +114,8 @@
 				</configuration>
 			</plugin>
 
-			<!-- Attach source jars -->
+			<!-- Attach source jars-->
 			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-source-plugin</artifactId>
 				<version>3.2.1</version>
 				<executions>
@@ -124,7 +123,7 @@
 						<id>attach-source</id>
 						<phase>compile</phase>
 						<goals>
-							<goal>jar-no-fork</goal>
+						<goal>jar-no-fork</goal>
 						</goals>
 					</execution>
 				</executions>
@@ -138,7 +137,7 @@
 					<execution>
 						<id>attach-javadocs</id>
 						<goals>
-							<goal>jar</goal>
+						<goal>jar</goal>
 						</goals>
 					</execution>
 				</executions>
@@ -153,7 +152,7 @@
 						<id>sign-artifacts</id>
 						<phase>verify</phase>
 						<goals>
-							<goal>sign</goal>
+						<goal>sign</goal>
 						</goals>
 					</execution>
 				</executions>
@@ -166,7 +165,18 @@
 				<configuration>
 					<serverId>ossrh</serverId>
 					<nexusUrl>https://s01.oss.sonatype.org/</nexusUrl>
-					<autoReleaseAfterClose>true</autoReleaseAfterClose>
+					<autoReleaseAfterClose>false</autoReleaseAfterClose>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-release-plugin</artifactId>
+				<version>2.5.3</version>
+				<configuration>
+					<autoVersionSubmodules>true</autoVersionSubmodules>
+					<useReleaseProfile>false</useReleaseProfile>
+					<releaseProfiles>release</releaseProfiles>
+					<goals>deploy</goals>
 				</configuration>
 			</plugin>
 		</plugins>

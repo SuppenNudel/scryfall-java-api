@@ -1,5 +1,15 @@
 # Scryfall Java Api
 
+## Include with Maven
+Published on Central Maven https://search.maven.org/artifact/io.github.suppennudel/scryfall-rest-api
+```
+<dependency>
+    <groupId>io.github.suppennudel</groupId>
+    <artifactId>scryfall-rest-api</artifactId>
+    <version>1.5.5</version>
+</dependency>
+```
+
 ## Usage
 Everything stems from de.rohmio.mtg.scryfall.api.ScryfallApi
 

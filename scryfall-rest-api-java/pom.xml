@@ -7,7 +7,7 @@
 
 	<groupId>io.github.suppennudel</groupId>
 	<artifactId>scryfall-rest-api</artifactId>
-	<version>1.5.6-SNAPSHOT</version>
+	<version>1.5.6</version>
 	<packaging>jar</packaging>
 
 	<name>Scryfall Rest Api</name>

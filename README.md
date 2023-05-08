@@ -6,7 +6,7 @@ Published on Central Maven https://search.maven.org/artifact/io.github.suppennud
 <dependency>
     <groupId>io.github.suppennudel</groupId>
     <artifactId>scryfall-rest-api</artifactId>
-    <version>1.5.5</version>
+    <version>1.5.6</version>
 </dependency>
 ```
 

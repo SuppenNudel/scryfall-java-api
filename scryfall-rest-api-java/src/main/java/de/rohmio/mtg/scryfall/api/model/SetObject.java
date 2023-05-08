@@ -4,6 +4,7 @@ import java.net.URI;
 import java.time.LocalDate;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
@@ -19,7 +20,9 @@ public class SetObject extends ScryfallObject {
 	private String arena_code;
 	private Integer tcgplayer_id;
 	private String name;
-	private SetType set_type;
+	@JsonProperty("set_type")
+	private String setType;
+	private SetType setTypeEnum;
 	@JsonFormat(pattern = "yyyy-MM-dd")
 	@JsonSerialize(using = LocalDateSerializer.class)
 	@JsonDeserialize(using = LocalDateDeserializer.class)
@@ -36,6 +39,11 @@ public class SetObject extends ScryfallObject {
 	private URI icon_svg_uri;
 	private URI search_uri;
 	private Integer printed_size;
+
+	@Override
+	public String toString() {
+		return String.format("%s (%s) @ %s", name, code, released_at);
+	}
 
 	public Integer getPrinted_size() {
 		return printed_size;
@@ -59,10 +67,19 @@ public class SetObject extends ScryfallObject {
 	public String getName() {
 		return name;
 	}
-	public SetType getSet_type() {
-		return set_type;
+	public String getSetType() {
+		return setType;
 	}
-	public LocalDate getReleased_at() {
+	public SetType getSetTypeEnum() {
+		if(setType == null) {
+			return null;
+		}
+		if(setTypeEnum == null) {
+			setTypeEnum = SetType.valueOf(setType.toUpperCase());
+		}
+		return setTypeEnum;
+	}
+	public LocalDate getReleasedAt() {
 		return released_at;
 	}
 	public String getBlock_code() {

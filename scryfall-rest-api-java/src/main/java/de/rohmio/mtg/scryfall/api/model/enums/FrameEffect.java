@@ -1,81 +1,28 @@
 package de.rohmio.mtg.scryfall.api.model.enums;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+public final class FrameEffect {
 
-public enum FrameEffect {
-
-	@JsonProperty("legendary")
-	LEGENDARY,
-
-	@JsonProperty("miracle")
-	MIRACLE,
-
-	@JsonProperty("nyxtouched")
-	NYX_TOUCHED,
-
-	@JsonProperty("draft")
-	DRAFT,
-
-	@JsonProperty("devoid")
-	DEVOID,
-
-	@JsonProperty("tombstone")
-	TOMBSTONE,
-
-	@JsonProperty("colorshifted")
-	COLORSHIFTED,
-
-	@JsonProperty("inverted")
-	INVERTED,
-
-	@JsonProperty("sunmoondfc")
-	SUN_MOON_DFC,
-
-	@JsonProperty("compasslanddfc")
-	COMPASS_LAND_DFC,
-
-	@JsonProperty("originpwdfc")
-	ORIGIN_PW_DFC,
-
-	@JsonProperty("mooneldrazidfc")
-	MOON_ELDRAZI_DFC,
-
-	@JsonProperty("moonreversemoondfc")
-	MOOND_REVERSE_MOON_DFC,
-
-	@JsonProperty("showcase")
-	SHOWCASE,
-
-	@JsonProperty("extendedart")
-	EXTENDED_ART,
-
-	@JsonProperty("companion")
-	COMPANION,
-
-	@JsonProperty("etched")
-	ETCHED,
-
-	@JsonProperty("snow")
-	SNOW,
-
-	@JsonProperty("lesson")
-	LESSON,
-
-	@JsonProperty("waxingandwaningmoondfc")
-	WAXING_AND_WANING_MOON_DFC,
-
-	@JsonProperty("fullart")
-	FULLART;
-
-	@Override
-	public String toString() {
-		try {
-			JsonProperty annotation = getClass().getField(name()).getAnnotation(JsonProperty.class);
-			return annotation.value();
-		} catch (NoSuchFieldException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
+	public static final String LEGENDARY = "legendary";
+	public static final String MIRACLE = "miracle";
+	public static final String NYX_TOUCHED = "nyxtouched";
+	public static final String DRAFT = "draft";
+	public static final String DEVOID = "devoid";
+	public static final String TOMBSTONE = "tombstone";
+	public static final String COLORSHIFTED = "colorshifted";
+	public static final String INVERTED = "inverted";
+	public static final String SUN_MOON_DFC = "sunmoondfc";
+	public static final String COMPASS_LAND_DFC = "compasslanddfc";
+	public static final String ORIGIN_PW_DFC = "originpwdfc";
+	public static final String MOON_ELDRAZI_DFC = "mooneldrazidfc";
+	public static final String MOOND_REVERSE_MOON_DFC = "moonreversemoondfc";
+	public static final String SHOWCASE = "showcase";
+	public static final String EXTENDED_ART = "extendedart";
+	public static final String COMPANION = "companion";
+	public static final String ETCHED = "etched";
+	public static final String SNOW = "snow";
+	public static final String LESSON = "lesson";
+	public static final String WAXING_AND_WANING_MOON_DFC = "waxingandwaningmoondfc";
+	public static final String FULLART = "fullart";
+	public static final String FAN_DFC = "fandfc";
 
 }

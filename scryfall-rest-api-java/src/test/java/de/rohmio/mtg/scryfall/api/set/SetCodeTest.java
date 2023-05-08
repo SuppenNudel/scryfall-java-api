@@ -27,7 +27,7 @@ public class SetCodeTest {
 		System.out.println("SetCodeTest.test() "+setCode);
 		SetObject setObject = ScryfallApi.sets.setByCode(setCode).get();
 		assertEquals(expectedSetName, setObject.getName());
-		assertEquals(LocalDate.parse("2022-04-29"), setObject.getReleased_at());
+		assertEquals(LocalDate.parse("2022-04-29"), setObject.getReleasedAt());
 	}
 
 }

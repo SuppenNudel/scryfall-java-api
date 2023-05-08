@@ -2,29 +2,28 @@ package de.rohmio.mtg.scryfall.api.model;
 
 import java.util.List;
 
-public class ScryfallError extends Exception {
-	
-	/**
-	 * 
-	 */
+public class ScryfallError extends RuntimeException {
+
 	private static final long serialVersionUID = -4852492830619286372L;
-	
+
 	private String object;
-	private String code;
+
 	private Integer status;
-	private List<String> warnings;
+	private String code;
 	private String details;
-	
+	private String type;
+	private List<String> warnings;
+
 	@Override
 	public String getMessage() {
 		return getDetails();
 	}
-	
+
 	@Override
 	public String toString() {
 		return String.format("%s %s - %s%s", status, code, details, warnings == null ? "" : ": "+warnings);
 	}
-	
+
 	public String getObject() {
 		return object;
 	}
@@ -39,6 +38,9 @@ public class ScryfallError extends Exception {
 	}
 	public String getDetails() {
 		return details;
+	}
+	public String getType() {
+		return type;
 	}
 
 }

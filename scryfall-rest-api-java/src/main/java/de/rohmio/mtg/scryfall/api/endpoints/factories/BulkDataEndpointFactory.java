@@ -31,12 +31,12 @@ public final class BulkDataEndpointFactory {
 		return bulkDataInfo(type.getType());
 	}
 
-	public BulkDataEndpoint bulkData(String idOrType, boolean forceUseOfCache) {
-		return new BulkDataEndpoint(idOrType, forceUseOfCache);
+	public BulkDataEndpoint bulkData(String idOrType, boolean forceDownload) {
+		return new BulkDataEndpoint(idOrType, forceDownload);
 	}
 
-	public BulkDataEndpoint bulkData(Type type, boolean forceUseOfCache) {
-		return bulkData(type.getType(), forceUseOfCache);
+	public BulkDataEndpoint bulkData(Type type, boolean forceDownload) {
+		return bulkData(type.getType(), forceDownload);
 	}
 
 }

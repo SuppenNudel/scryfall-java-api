@@ -1,25 +1,37 @@
 package de.rohmio.mtg.scryfall.api.model.enums;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public enum Rarity {
 
-	@JsonProperty("common")
-	COMMON,
+	COMMON("common"),
+	UNCOMMON("uncommon"),
+	RARE("rare"),
+	MYTHIC("mythic"),
+	BONUS("bonus"),
+	SPECIAL("special");
 
-	@JsonProperty("uncommon")
-	UNCOMMON,
+	private String value;
 
-	@JsonProperty("rare")
-	RARE,
+	private static final Map<String, Rarity> ENUM_MAP;
 
-	@JsonProperty("mythic")
-	MYTHIC,
+	static {
+		ENUM_MAP = Stream.of(Rarity.values()).collect(Collectors.toMap(Rarity::getValue, Function.identity()));
+	}
 
-	@JsonProperty("bonus")
-	BONUS,
+	private Rarity(String value) {
+		this.value = value;
+	}
 
-	@JsonProperty("special")
-	SPECIAL;
+	public String getValue() {
+		return value;
+	}
+
+	public static Rarity fromValue(String value) {
+		return ENUM_MAP.get(value);
+	}
 
 }

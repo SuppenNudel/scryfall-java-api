@@ -1,75 +1,50 @@
 package de.rohmio.mtg.scryfall.api.model.enums;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public enum Format {
 
-	@JsonProperty("standard")
-	STANDARD,
+	STANDARD("standard"),
+	FUTURE("future"),
+	HISTORIC("historic"),
+	PIONEER("pioneer"),
+	MODERN("modern"),
+	LEGACY("legacy"),
+	PAUPER("pauper"),
+	VINTAGE("vintage"),
+	PENNY_DREADFUL("penny"),
+	COMMANDER("commander"),
+	BRAWL("brawl"),
+	DUEL_COMMANDER("duel"),
+	GLADIATOR("gladiator"),
+	PREMODERN("premodern"),
+	OLDSCHOOL("oldschool"),
+	HISTORIC_BRAWL("historicbrawl"),
+	ALCHEMY("alchemy"),
+	EXPLORER("explorer"),
+	PAUPER_COMMANDER("paupercommander");
 
-	@JsonProperty("future")
-	FUTURE,
+	private String value;
 
-	@JsonProperty("historic")
-	HISTORIC,
+	private static final Map<String, Format> ENUM_MAP;
 
-	@JsonProperty("pioneer")
-	PIONEER,
+	static {
+		ENUM_MAP = Stream.of(Format.values()).collect(Collectors.toMap(Format::getValue, Function.identity()));
+	}
 
-	@JsonProperty("modern")
-	MODERN,
+	private Format(String value) {
+		this.value = value;
+	}
 
-	@JsonProperty("legacy")
-	LEGACY,
+	public String getValue() {
+		return value;
+	}
 
-	@JsonProperty("pauper")
-	PAUPER,
-
-	@JsonProperty("vintage")
-	VINTAGE,
-
-	@JsonProperty("penny")
-	PENNY_DREADFUL,
-
-	@JsonProperty("commander")
-	COMMANDER,
-
-	@JsonProperty("brawl")
-	BRAWL,
-
-	@JsonProperty("duel")
-	DUEL_COMMANDER,
-
-	@JsonProperty("gladiator")
-	GLADIATOR,
-
-	@JsonProperty("premodern")
-	PREMODERN,
-
-	@JsonProperty("oldschool")
-	OLDSCHOOL,
-
-	@JsonProperty("historicbrawl")
-	HISTORIC_BRAWL,
-
-	@JsonProperty("alchemy")
-	ALCHEMY,
-
-	@JsonProperty("explorer")
-	EXPLORER,
-
-	@JsonProperty("paupercommander")
-	PAUPER_COMMANDER;
-
-	@Override
-	public String toString() {
-		try {
-			JsonProperty annotation = getClass().getField(name()).getAnnotation(JsonProperty.class);
-			return annotation.value();
-		} catch (NoSuchFieldException e) {
-			e.printStackTrace();
-		}
-		return null;
+	public static Format fromValue(String value) {
+		return ENUM_MAP.get(value);
 	}
 
 }

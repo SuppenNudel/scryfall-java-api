@@ -19,13 +19,13 @@ public class CollectorTest {
 	@Test
 	public void langTest() throws ScryfallError {
 		CardObject cardObject = ScryfallApi.cards.collectorsNumber("eld", "1", "de").get();
-		assertEquals("Bejubelte Wettstreiterin", cardObject.getPrinted_name());
+		assertEquals("Bejubelte Wettstreiterin", cardObject.getPrintedName());
 	}
 
 	@Test
 	public void jpLangTest() throws ScryfallError {
 		CardObject cardObject = ScryfallApi.cards.collectorsNumber("eld", "1", "ja").get();
-		assertEquals("評判高い挑戦者", cardObject.getPrinted_name());
+		assertEquals("評判高い挑戦者", cardObject.getPrintedName());
 	}
 
 }

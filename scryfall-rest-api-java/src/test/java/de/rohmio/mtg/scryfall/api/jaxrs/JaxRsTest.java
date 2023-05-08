@@ -15,7 +15,6 @@ import javax.ws.rs.core.Response.Status;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.function.Executable;
 
 import de.rohmio.mtg.scryfall.api.model.CardObject;
 import de.rohmio.mtg.scryfall.api.model.ScryfallError;
@@ -32,12 +31,9 @@ public class JaxRsTest {
 
 	@Test
 	public void rootDirect() throws InterruptedException, ExecutionException {
-		Assertions.assertThrows(BadRequestException.class, new Executable() {
-			@Override
-			public void execute() throws Throwable {
-				ScryfallError errorBody = target.request(MediaType.APPLICATION_JSON).get(ScryfallError.class);
-				System.out.println(errorBody);
-			}
+		Assertions.assertThrows(BadRequestException.class, () -> {
+			ScryfallError errorBody = target.request(MediaType.APPLICATION_JSON).get(ScryfallError.class);
+			System.out.println(errorBody);
 		});
 	}
 
@@ -77,14 +73,11 @@ public class JaxRsTest {
 
 	@Test
 	public void directNotFound() throws InterruptedException, ExecutionException {
-		Assertions.assertThrows(NotFoundException.class, new Executable() {
-			@Override
-			public void execute() throws Throwable {
-				WebTarget target = JaxRsTest.target.path("/cards/named").queryParam("fuzzy",
-						"Jace tdnagihdsuaigh 832he mindsc");
-				CardObject cardObject = target.request(MediaType.APPLICATION_JSON).get(CardObject.class);
-				System.out.println(cardObject);
-			}
+		Assertions.assertThrows(NotFoundException.class, () -> {
+			WebTarget target = JaxRsTest.target.path("/cards/named").queryParam("fuzzy",
+					"Jace tdnagihdsuaigh 832he mindsc");
+			CardObject cardObject = target.request(MediaType.APPLICATION_JSON).get(CardObject.class);
+			System.out.println(cardObject);
 		});
 	}
 

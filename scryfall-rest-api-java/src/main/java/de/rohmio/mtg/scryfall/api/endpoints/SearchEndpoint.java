@@ -1,5 +1,6 @@
 package de.rohmio.mtg.scryfall.api.endpoints;
 
+
 import javax.ws.rs.core.GenericType;
 
 import de.rohmio.mtg.scryfall.api.endpoints.factories.PagedAbstractEndpoint;
@@ -16,19 +17,19 @@ import de.rohmio.mtg.scryfall.api.model.enums.Unique;
  * If only one card is found, this method will still return a List.
  *
  * Missing Luxuries
- * 
+ *
  * Note that this search endpoint is more strict than the user-facing search system on Scryfall. In particular:
- * 
+ *
  * On Scryfall’s website, if your search does not match any cards, the search system automatically retries with include:extras added. This API method does not automatically retry your search.
- * 
+ *
  * On Scryfall’s website, if your search is only for a set (example: e:set), the system automatically redirects you to the ++e:set page for that set. This API method does not automatically redirect you.
- * 
+ *
  * On Scryfall’s website, certain searches trigger additional user interface elements that suggest expanding your search coverage (with o:changeling or ++ for example). This API method does not have this suggestion behavior.
- * 
+ *
  * This API method will not provide help with spelling errors.
  */
 public class SearchEndpoint extends PagedAbstractEndpoint<CardObject> {
-	
+
 	public SearchEndpoint(String query) {
 		super("/cards/search", new GenericType<ListObject<CardObject>>() {});
 		setQueryParam("q", query);
@@ -42,7 +43,7 @@ public class SearchEndpoint extends PagedAbstractEndpoint<CardObject> {
 		setQueryParam("unique", unique);
 		return this;
 	}
-	
+
 	/**
 	 * @param sorting The method to sort returned cards. See below. Defaults to name
 	 * @return this builder
@@ -51,7 +52,7 @@ public class SearchEndpoint extends PagedAbstractEndpoint<CardObject> {
 		setQueryParam("order", sorting);
 		return this;
 	}
-	
+
 	/**
 	 * @param direction The direction to sort cards. See below. Defaults to auto
 	 * @return this builder
@@ -60,7 +61,7 @@ public class SearchEndpoint extends PagedAbstractEndpoint<CardObject> {
 		setQueryParam("dir", direction);
 		return this;
 	}
-	
+
 	/**
 	 * @param includeExtras If true, extra cards (tokens, planes, etc) will be included. Equivalent to adding include:extras to the fulltext search. Defaults to false.
 	 * @return this builder
@@ -87,7 +88,7 @@ public class SearchEndpoint extends PagedAbstractEndpoint<CardObject> {
 		setQueryParam("include_variations", includeVariations);
 		return this;
 	}
-	
+
 	/**
 	 * @param page The page number to return, default 1.
 	 * @return this builder

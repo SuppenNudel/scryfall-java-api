@@ -8,6 +8,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.function.Consumer;
+import java.util.logging.Logger;
 
 import javax.ws.rs.ProcessingException;
 import javax.ws.rs.WebApplicationException;
@@ -36,8 +37,9 @@ public abstract class AbstractEndpoint<T> {
 	private static final String SCRYFALL_URI = "https://api.scryfall.com";
 	private static final MediaType MEDIA_TYPE = MediaType.APPLICATION_JSON_TYPE;
 
-	private static LocalDateTime lastRequestTimestamp = LocalDateTime.now().minus(ScryfallApi.SCRYFALL_RATE_LIMIT,
-			ChronoUnit.MILLIS);
+	private static LocalDateTime lastRequestTimestamp =
+			LocalDateTime.now().minus(ScryfallApi.SCRYFALL_RATE_LIMIT,
+					ChronoUnit.MILLIS);
 
 	private WebTarget target;
 	private GenericType<T> resultType;
@@ -63,21 +65,21 @@ public abstract class AbstractEndpoint<T> {
 		@Override
 		public Object aroundReadFrom(ReaderInterceptorContext context) throws IOException, WebApplicationException {
 
-	        // the original outputstream jersey writes with
-	        final InputStream in = context.getInputStream();
+			// the original outputstream jersey writes with
+			final InputStream in = context.getInputStream();
 
-	        // you can use Jersey's target/builder properties or
-	        // special headers to set identifiers of the source of the stream
-	        // and other info needed for progress monitoring
-	        String id = (String) context.getProperty("id");
-	        long fileSize = (long) context.getProperty("fileSize");
+			// you can use Jersey's target/builder properties or
+			// special headers to set identifiers of the source of the stream
+			// and other info needed for progress monitoring
+			String id = (String) context.getProperty("id");
+			long fileSize = (long) context.getProperty("fileSize");
 
-	        // subclass of counting stream which will notify my progress
-	        // indicators.
-	        context.setInputStream(new MyCountingInputStream(in, id, fileSize));
+			// subclass of counting stream which will notify my progress
+			// indicators.
+			context.setInputStream(new MyCountingInputStream(in, id, fileSize));
 
-	        // proceed with any other interceptors
-	        return context.proceed();
+			// proceed with any other interceptors
+			return context.proceed();
 		}
 
 	}
@@ -116,7 +118,7 @@ public abstract class AbstractEndpoint<T> {
 				e.printStackTrace();
 			}
 		}
-		// System.out.println(Thread.currentThread() + " will execute");
+		//		Logger.getGlobal().info(Thread.currentThread() + " will execute");
 		lastRequestTimestamp = LocalDateTime.now();
 	}
 
@@ -165,8 +167,8 @@ public abstract class AbstractEndpoint<T> {
 				ScryfallError scryfallError = response.readEntity(ScryfallError.class);
 				throw scryfallError;
 			} catch (ProcessingException | IllegalStateException e) {
-				System.err.println(target.getUri());
-				System.err.println(response);
+				Logger.getGlobal().severe(target.getUri().toString());
+				Logger.getGlobal().severe(response.toString());
 				e.printStackTrace();
 			}
 		}
@@ -178,7 +180,9 @@ public abstract class AbstractEndpoint<T> {
 		try {
 			return response.readEntity(resultType);
 		} catch (ProcessingException | IllegalStateException e) {
-			System.err.println(target.getUri());
+			Logger.getGlobal().severe(target.getUri().toString());
+			Logger.getGlobal().severe(e.getMessage());
+			Logger.getGlobal().severe(e.getStackTrace()[0].toString());
 			e.printStackTrace();
 		}
 		return null;

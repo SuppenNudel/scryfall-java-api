@@ -1,15 +1,21 @@
 package de.rohmio.mtg.scryfall.api.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class BulkDataObject extends ScryfallObject {
 
 	private String id;
-	private String type;
-	private String updated_at;
 	private String uri;
+	private String type;
 	private String name;
 	private String description;
-	private int compressed_size;
 	private String download_uri;
+	//	@JsonFormat(pattern = "yyyy-MM-ddT")
+	//	@JsonSerialize(using = LocalDateSerializer.class)
+	//	@JsonDeserialize(using = LocalDateDeserializer.class)
+	private String updated_at;
+	@JsonProperty("size")
+	private int size;
 	private String content_type;
 	private String content_encoding;
 
@@ -37,8 +43,8 @@ public class BulkDataObject extends ScryfallObject {
 		return description;
 	}
 
-	public int getCompressed_size() {
-		return compressed_size;
+	public int getSize() {
+		return size;
 	}
 
 	public String getDownload_uri() {

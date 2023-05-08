@@ -1,36 +1,38 @@
 package de.rohmio.mtg.scryfall.api.model.enums;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public enum Color {
 
-	@JsonProperty("W")
-	WHITE,
+	WHITE("W"),
+	BLUE("U"),
+	BLACK("B"),
+	RED("R"),
+	GREEN("G"),
+	TAP_SYMBOL("T");
+	//	COLORLESS("C");
 
-	@JsonProperty("U")
-	BLUE,
+	private String value;
 
-	@JsonProperty("B")
-	BLACK,
+	private static final Map<String, Color> ENUM_MAP;
 
-	@JsonProperty("R")
-	RED,
+	static {
+		ENUM_MAP = Stream.of(Color.values()).collect(Collectors.toMap(Color::getValue, Function.identity()));
+	}
 
-	@JsonProperty("G")
-	GREEN,
+	private Color(String value) {
+		this.value = value;
+	}
 
-	@JsonProperty("C")
-	COLORLESS;
+	public String getValue() {
+		return value;
+	}
 
-	@Override
-	public String toString() {
-		try {
-			JsonProperty annotation = getClass().getField(name()).getAnnotation(JsonProperty.class);
-			return annotation.value();
-		} catch (NoSuchFieldException e) {
-			e.printStackTrace();
-		}
-		return null;
+	public static Color fromValue(String value) {
+		return ENUM_MAP.get(value);
 	}
 
 }

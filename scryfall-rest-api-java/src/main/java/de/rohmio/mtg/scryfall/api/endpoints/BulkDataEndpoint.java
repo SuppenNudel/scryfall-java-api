@@ -2,6 +2,8 @@ package de.rohmio.mtg.scryfall.api.endpoints;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -22,22 +24,21 @@ import de.rohmio.mtg.scryfall.api.model.ScryfallError;
 
 public class BulkDataEndpoint extends AbstractEndpoint<List<CardObject>> {
 
-	private boolean save;
-	private boolean useCache;
+	private boolean forceDownload;
 
 	private File file;
 
 	// TODO check if cache is there before using getDownloadUrl
-	public BulkDataEndpoint(String idOrType, boolean useCacheIfThere) {
-		super(getDownloadUrl(idOrType, useCacheIfThere), new GenericType<List<CardObject>>() {}, true);
+	public BulkDataEndpoint(String idOrType, boolean forceDownload) {
+		super(getDownloadUrl(idOrType, forceDownload), new GenericType<List<CardObject>>() {}, true);
 		file = new File(idOrType+".json");
-		useCache(useCacheIfThere);
+		this.forceDownload = forceDownload;
 	}
 
-	private static String getDownloadUrl(String idOrType, boolean useCacheIfThere) {
+	private static String getDownloadUrl(String idOrType, boolean forceDownload) {
 		File file = new File(idOrType+".json");
-		if(file.exists() && useCacheIfThere) {
-			return "not used";
+		if(file.exists() && !forceDownload) {
+			return "download url not needed";
 		}
 		try {
 			return ScryfallApi.bulkData.bulkDataInfo(idOrType).get().getDownload_uri();
@@ -47,23 +48,21 @@ public class BulkDataEndpoint extends AbstractEndpoint<List<CardObject>> {
 		return null;
 	}
 
-	public BulkDataEndpoint save(boolean save) {
-		this.save = save;
-		return this;
-	}
-
-	public BulkDataEndpoint useCache(boolean useCache) {
-		this.useCache = useCache;
+	public BulkDataEndpoint forceDownload(boolean forceDownload) {
+		this.forceDownload = forceDownload;
 		return this;
 	}
 
 	@Override
 	public List<CardObject> get() throws ScryfallError {
 		List<CardObject> objects = null;
-		if(useCache && file.exists()) {
+		if(file.exists() && !forceDownload) {
+			System.out.println(file.getAbsolutePath());
 			JsonMapper mapper = new JsonMapper();
 			try {
-				objects = mapper.readValue(file, new TypeReference<List<CardObject>>() {});
+				byte[] encoded = Files.readAllBytes(file.toPath());
+				String json = new String(encoded, StandardCharsets.UTF_8);
+				objects = mapper.readValue(json, new TypeReference<List<CardObject>>() {});
 			} catch (JsonParseException e) {
 				e.printStackTrace();
 			} catch (JsonMappingException e) {
@@ -79,7 +78,7 @@ public class BulkDataEndpoint extends AbstractEndpoint<List<CardObject>> {
 
 	@Override
 	public void get(Consumer<List<CardObject>> callback) {
-		if(useCache && file.exists()) {
+		if(file.exists() && !forceDownload) {
 			JsonMapper mapper = new JsonMapper();
 			try {
 				List<CardObject> objects = mapper.readValue(file, new TypeReference<List<CardObject>>() {});
@@ -100,18 +99,16 @@ public class BulkDataEndpoint extends AbstractEndpoint<List<CardObject>> {
 	protected List<CardObject> parseResponse(Response response) {
 		List<CardObject> parseResponse = super.parseResponse(response);
 
-		if(save) {
-			JsonMapper mapper = new JsonMapper();
-			mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
-			try {
-				mapper.writeValue(file, parseResponse);
-			} catch (JsonGenerationException e) {
-				e.printStackTrace();
-			} catch (JsonMappingException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+		JsonMapper mapper = new JsonMapper();
+		mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+		try {
+			mapper.writeValue(file, parseResponse);
+		} catch (JsonGenerationException e) {
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 		return parseResponse;
 	}

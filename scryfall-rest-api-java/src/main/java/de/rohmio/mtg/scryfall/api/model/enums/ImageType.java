@@ -1,36 +1,37 @@
 package de.rohmio.mtg.scryfall.api.model.enums;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public enum ImageType {
-	
-	@JsonProperty("small")
-	SMALL,
 
-	@JsonProperty("normal")
-	NORMAL,
+	PNG("png"),
+	BORDER_CROP("border_crop"),
+	ART_CROP("art_crop"),
+	LARGE("large"),
+	NORMAL("normal"),
+	SMALL("small");
 
-	@JsonProperty("large")
-	LARGE,
+	private String value;
 
-	@JsonProperty("png")
-	PNG,
+	private static final Map<String, ImageType> ENUM_MAP;
 
-	@JsonProperty("art_crop")
-	ART_CROP,
+	static {
+		ENUM_MAP = Stream.of(ImageType.values()).collect(Collectors.toMap(ImageType::getValue, Function.identity()));
+	}
 
-	@JsonProperty("border_crop")
-	BORDER_CROP;
+	private ImageType(String value) {
+		this.value = value;
+	}
 
-	@Override
-	public String toString() {
-		try {
-			JsonProperty annotation = getClass().getField(name()).getAnnotation(JsonProperty.class);
-			return annotation.value();
-		} catch (NoSuchFieldException e) {
-			e.printStackTrace();
-		}
-		return null;
+	public String getValue() {
+		return value;
+	}
+
+	public static ImageType fromValue(String value) {
+		return ENUM_MAP.get(value);
 	}
 
 }

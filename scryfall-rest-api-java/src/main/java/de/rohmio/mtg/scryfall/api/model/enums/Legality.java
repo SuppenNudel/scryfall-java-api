@@ -1,30 +1,35 @@
 package de.rohmio.mtg.scryfall.api.model.enums;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public enum Legality {
-	
-	@JsonProperty("legal")
-	LEGAL,
 
-	@JsonProperty("not_legal")
-	NOT_LEGAL,
+	LEGAL("legal"),
+	NOT_LEGAL("not_legal"),
+	RESTRICTED("restricted"),
+	BANNED("banned");
 
-	@JsonProperty("restricted")
-	RESTRICTED,
+	private String value;
 
-	@JsonProperty("banned")
-	BANNED;
+	private static final Map<String, Legality> ENUM_MAP;
 
-	@Override
-	public String toString() {
-		try {
-			JsonProperty annotation = getClass().getField(name()).getAnnotation(JsonProperty.class);
-			return annotation.value();
-		} catch (NoSuchFieldException e) {
-			e.printStackTrace();
-		}
-		return null;
+	static {
+		ENUM_MAP = Stream.of(Legality.values()).collect(Collectors.toMap(Legality::getValue, Function.identity()));
+	}
+
+	private Legality(String value) {
+		this.value = value;
+	}
+
+	public String getValue() {
+		return value;
+	}
+
+	public static Legality fromValue(String value) {
+		return ENUM_MAP.get(value);
 	}
 
 }

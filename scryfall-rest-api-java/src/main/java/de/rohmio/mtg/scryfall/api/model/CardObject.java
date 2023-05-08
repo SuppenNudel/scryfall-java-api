@@ -2,224 +2,264 @@ package de.rohmio.mtg.scryfall.api.model;
 
 import java.net.URI;
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 
-import de.rohmio.mtg.scryfall.api.model.enums.BorderColor;
 import de.rohmio.mtg.scryfall.api.model.enums.Color;
-import de.rohmio.mtg.scryfall.api.model.enums.ContentSite;
-import de.rohmio.mtg.scryfall.api.model.enums.Finish;
 import de.rohmio.mtg.scryfall.api.model.enums.Format;
-import de.rohmio.mtg.scryfall.api.model.enums.Frame;
-import de.rohmio.mtg.scryfall.api.model.enums.FrameEffect;
-import de.rohmio.mtg.scryfall.api.model.enums.Game;
-import de.rohmio.mtg.scryfall.api.model.enums.ImageStatus;
 import de.rohmio.mtg.scryfall.api.model.enums.Legality;
+import de.rohmio.mtg.scryfall.api.model.enums.PriceType;
 import de.rohmio.mtg.scryfall.api.model.enums.Rarity;
 
 public class CardObject extends CardFaceObject {
 
-	/**
-	 * UUID - Finds a card with the specified Scryfall id.
-	 */
-	private String id;
-
-	/**
-	 * Finds a card with the specified mtgo_id or mtgo_foil_id.
-	 */
-	private Integer mtgo_id;
-
-	/**
-	 * Finds a card with the specified value among its multiverse_ids.
-	 */
-	private Integer multiverse_id;
-
-	private Integer penny_rank;
-
-	public Integer getPenny_rank() {
-		return penny_rank;
-	}
-
-	/*
-	 * Finds the preferred scans of cards with the specified illustration_id.
-	 */
-//	private String illustration_id;
-
-	/**
-	 * Finds the newest edition of a card with the specified name.
-	 */
-//	private String name;
-
-	/**
-	 * Finds a card matching the specified name and set.
-	 */
-	private String set;
-
-	/**
-	 * Finds a card with the specified collector_number and set. Note that collector numbers are strings.
-	 */
-	private String collector_number;
+	private Boolean foil; // ignored, now in finishes
+	private Boolean nonfoil; // ignored, now in finishes
+	private List<UUID> artist_ids; // ignored,
 
 	// Core Card Fields
 
-	private Integer arena_id;
+	@JsonProperty("arena_id")
+	private Integer arenaId;
+	private UUID id;
 	private String lang;
-	private Integer mtgo_foil_id;
-	private List<Integer> multiverse_ids;
-	private Integer tcgplayer_id;
-	private Integer tcgplayer_etched_id;
-	private Integer cardmarket_id;
-	private String prints_search_uri;
-	private String rulings_uri;
-	private String scryfall_uri;
-	private String uri;
+	@JsonProperty("mtgo_id")
+	private Integer mtgoId;
+	@JsonProperty("mtgo_foil_id")
+	private Integer mtgoFoilId;
+	@JsonProperty("multiverse_ids")
+	private List<Integer> multiverseIds;
+	@JsonProperty("tcgplayer_id")
+	private Integer tcgplayerId;
+	@JsonProperty("tcgplayer_etched_id")
+	private Integer tcgplayerEtchedId;
+	@JsonProperty("cardmarket_id")
+	private Integer cardmarketId;
+	// private String object; -> ScryfallObject
+	// private UUID oracleId; -> CardFaceObject
+	@JsonProperty("prints_search_uri")
+	private URI printsSearchUri;
+	@JsonProperty("rulings_uri")
+	private URI rulingsUri;
+	@JsonProperty("scryfall_uri")
+	private URI scryfallUri;
+	private URI uri;
 
 	// Gameplay Fields
 
-	private List<RelatedCardObject> all_parts;
-	private List<CardFaceObject> card_faces;
-	private List<Color> color_identity;
+	@JsonProperty("all_parts")
+	private List<RelatedCardObject> allParts;
+	@JsonProperty("card_faces")
+	private List<CardFaceObject> cardFaces;
+	// private Double cmc; -> CardFaceObject
+	@JsonProperty("color_identity")
+	private List<String> colorIdentity;
+	// private List<String> colorIndicator; -> CardFaceObject
+	// private List<String> color; -> CardFaceObject
+	@JsonProperty("edhrec_rank")
+	private Integer edhrecRank;
+	@JsonProperty("hand_modifier")
+	private String handModifier;
 	private List<String> keywords;
-	private Integer edhrec_rank;
-	private Boolean foil;
-	private String hand_modifier;
-	private Map<Format, Legality> legalities;
-	private String life_modifier;
-	private Boolean nonfoil;
+	// private String layout; -> CardFaceObject
+	private Map<String, String> legalities; // TODO enum to string
+	@JsonProperty("life_modifier")
+	private String lifeModifier;
+	// private String loyalty; -> CardFaceObject
+	// private String manaCost; -> CardFaceObject
+	// private String name; -> CardFaceObject
+	// private String oracle_text; -> CardFaceObject
 	private Boolean oversized;
-
-	/**
-	 * Colors of mana that this card could produce.
-	 */
-	private List<Color> produced_mana;
+	@JsonProperty("penny_rank")
+	private Integer pennyRank;
+	// private String power; -> CardFaceObject
+	@JsonProperty("produced_mana")
+	private List<String> producedMana;
 	private Boolean reserved;
+	// private String toughness; -> CardFaceObject
+	// private String type_line -> CardFaceObject
 
 	// Print Fields
 
-	private List<String> artist_ids;
+	// artist -> CardFaceObject
+	@JsonProperty("attraction_lights")
+	private List<Integer> attractionLights;
 	private Boolean booster;
-	private BorderColor border_color;
-	private String card_back_id;
+	@JsonProperty("border_color")
+	private String borderColor;
+	@JsonProperty("card_back_id")
+	private UUID cardBackId;
+	@JsonProperty("collector_number")
+	private String collectorNumber;
+	@JsonProperty("content_warning")
+	private Boolean contentWarning;
 	private Boolean digital;
-	private List<Finish> finishes;
-	private List<FrameEffect> frame_effects;
-	private Frame frame;
-	private Boolean full_art;
-	private List<Game> games;
-	private Boolean highres_image;
-	private ImageStatus image_status;
-	private PriceObject prices;
+	private List<String> finishes;
+	@JsonProperty("flavor_name")
+	private String flavorName;
+	// flavor_text -> CardFaceObject
+	@JsonProperty("frame_effects")
+	private List<String> frameEffects;
+	private String frame;
+	@JsonProperty("full_art")
+	private Boolean fullArt;
+	private List<String> games;
+	@JsonProperty("highres_image")
+	private Boolean highresImage;
+	// illustration_id -> CardFaceObject
+	@JsonProperty("image_status")
+	private String imageStatus;
+	private Map<String, Double> prices;
+	// printed_name -> CardFaceObject
+	// printed_type_line -> CardFaceObject
 	private Boolean promo;
-	private List<String> promo_types;
-	private Map<ContentSite, String> purchase_uris;
-	private Rarity rarity;
-	private Map<String, String> related_uris;
-
+	@JsonProperty("promo_types")
+	private List<String> promoTypes;
+	@JsonProperty("purchase_uris")
+	private Map<String, String> purchaseUris;
+	private String rarity;
+	@JsonProperty("related_uris")
+	private Map<String, String> relatedUris;
 	@JsonFormat(pattern = "yyyy-MM-dd")
 	@JsonSerialize(using = LocalDateSerializer.class)
 	@JsonDeserialize(using = LocalDateDeserializer.class)
-	private LocalDate released_at;
+	@JsonProperty("released_at")
+	private LocalDate releasedAt;
 	private Boolean reprint;
-	private URI scryfall_set_uri;
-	private String set_name;
-	private URI set_search_uri;
-	private String set_type;
-	private URI set_uri;
-	private String set_id;
-	private Boolean story_spotlight;
+	@JsonProperty("scryfall_set_uri")
+	private URI scryfallSetUri;
+	@JsonProperty("set_name")
+	private String setName;
+	@JsonProperty("set_search_uri")
+	private URI setSearchUri;
+	@JsonProperty("set_type")
+	private String setType;
+	@JsonProperty("set_uri")
+	private URI setUri;
+	private String set;
+	@JsonProperty("set_id")
+	private String setId;
+	@JsonProperty("story_spotlight")
+	private Boolean storySpotlight;
 	private Boolean textless;
 	private Boolean variation;
-	private String variation_of;
-	private String security_stamp;
+	@JsonProperty("variation_of")
+	private UUID variationOf;
+	@JsonProperty("security_stamp")
+	private String securityStamp;
+	// watermark -> CardFaceObject
+	// preview.previewed_at -> preview
+	// preview.source_uri -> preview
+	// preview.source -> preview
 	private Preview preview;
-
-	private Boolean content_warning;
 
 	@Override
 	public String toString() {
-		return String.format("%s - %s (%s)", getName(), getSet(), getSet_name());
+		return String.format("%s - %s (%s)", getName(), getSet(), getSetName());
 	}
 
-	public Integer getArena_id() {
-		return arena_id;
+	public List<Integer> getAttractionLights() {
+		return attractionLights;
+	}
+
+	public Integer getArenaId() {
+		return arenaId;
 	}
 
 	public String getLang() {
 		return lang;
 	}
 
-	public Integer getMtgo_foil_id() {
-		return mtgo_foil_id;
+	public Integer getMtgoFoilId() {
+		return mtgoFoilId;
 	}
 
-	public List<Integer> getMultiverse_ids() {
-		return multiverse_ids;
+	public List<Integer> getMultiverseIds() {
+		return multiverseIds;
 	}
 
-	public Integer getTcgplayer_id() {
-		return tcgplayer_id;
+	public Integer getTcgplayerId() {
+		return tcgplayerId;
 	}
 
-	public Integer getCardmarket_id() {
-		return cardmarket_id;
+	public Integer getCardmarketId() {
+		return cardmarketId;
 	}
 
-	public String getPrints_search_uri() {
-		return prints_search_uri;
+	public URI getPrintsSearchUri() {
+		return printsSearchUri;
 	}
 
-	public String getRulings_uri() {
-		return rulings_uri;
+	public URI getRulingsUri() {
+		return rulingsUri;
 	}
 
-	public String getScryfall_uri() {
-		return scryfall_uri;
+	public URI getScryfallUri() {
+		return scryfallUri;
 	}
 
-	public String getUri() {
+	public URI getUri() {
 		return uri;
 	}
 
-	public List<RelatedCardObject> getAll_parts() {
-		return all_parts;
+	public List<RelatedCardObject> getAllParts() {
+		return allParts;
 	}
 
-	public List<CardFaceObject> getCard_faces() {
-		return card_faces;
-	}
-	
-	public List<Color> getColor_identity() {
-		return color_identity;
+	public List<CardFaceObject> getCardFaces() {
+		return cardFaces;
 	}
 
-	public Integer getEdhrec_rank() {
-		return edhrec_rank;
+	public List<String> getColorIdentity() {
+		return colorIdentity;
 	}
 
-	public Boolean getFoil() {
-		return foil;
+	@JsonIgnore
+	public List<Color> getColorIdentityEnum() {
+		if (colorIdentity == null) {
+			return null;
+		}
+		return colorIdentity.stream().map(Color::fromValue).collect(Collectors.toList());
 	}
 
-	public String getHand_modifier() {
-		return hand_modifier;
+	public Integer getEdhrecRank() {
+		return edhrecRank;
 	}
 
-	public Map<Format, Legality> getLegalities() {
+	public String getHandModifier() {
+		return handModifier;
+	}
+
+	public Map<String, String> getLegalities() {
 		return legalities;
 	}
 
-	public String getLife_modifier() {
-		return life_modifier;
+	@JsonIgnore
+	public Map<Format, Legality> getLegalitiesEnum() {
+		if (legalities == null) {
+			return null;
+		}
+		Map<Format, Legality> enumMap = new HashMap<>();
+		for (Entry<String, String> entry : legalities.entrySet()) {
+			enumMap.put(Format.fromValue(entry.getKey()), Legality.fromValue(entry.getValue()));
+		}
+		return enumMap;
 	}
 
-	public Boolean getNonfoil() {
-		return nonfoil;
+	public String getLifeModifier() {
+		return lifeModifier;
 	}
 
 	public Boolean getOversized() {
@@ -230,88 +270,105 @@ public class CardObject extends CardFaceObject {
 		return reserved;
 	}
 
-	public BorderColor getBorder_color() {
-		return border_color;
+	public String getBorderColor() {
+		return borderColor;
 	}
 
 	public Boolean getDigital() {
 		return digital;
 	}
 
-	public List<FrameEffect> getFrame_effects() {
-		return frame_effects;
+	public List<String> getFrameEffects() {
+		return frameEffects;
 	}
 
-	public Frame getFrame() {
+	public String getFrame() {
 		return frame;
 	}
 
-	public Boolean getFull_art() {
-		return full_art;
+	public Boolean getFullArt() {
+		return fullArt;
 	}
 
-	public List<Game> getGames() {
+	public List<String> getGames() {
 		return games;
 	}
 
-	public Boolean getHighres_image() {
-		return highres_image;
+	public Boolean getHighresImage() {
+		return highresImage;
 	}
 
-	public ImageStatus getImage_status() {
-		return image_status;
+	public String getImageStatus() {
+		return imageStatus;
 	}
 
-	public PriceObject getPrices() {
+	public Map<String, Double> getPrices() {
 		return prices;
+	}
+
+	@JsonIgnore
+	public Map<PriceType, Double> getPricesEnum() {
+		if (prices == null) {
+			return null;
+		}
+		Map<PriceType, Double> enumMap = new HashMap<>();
+		for (Entry<String, Double> entry : prices.entrySet()) {
+			enumMap.put(PriceType.fromValue(entry.getKey()), entry.getValue());
+		}
+		return enumMap;
 	}
 
 	public Boolean getPromo() {
 		return promo;
 	}
 
-	public Map<ContentSite, String> getPurchase_uris() {
-		return purchase_uris;
+	public Map<String, String> getPurchaseUris() {
+		return purchaseUris;
 	}
 
-	public Rarity getRarity() {
+	public String getRarity() {
 		return rarity;
 	}
 
-	public Map<String, String> getRelated_uris() {
-		return related_uris;
+	@JsonIgnore
+	public Rarity getRarityEnum() {
+		return Rarity.fromValue(rarity);
 	}
 
-	public LocalDate getReleased_at() {
-		return released_at;
+	public Map<String, String> getRelatedUris() {
+		return relatedUris;
+	}
+
+	public LocalDate getReleasedAt() {
+		return releasedAt;
 	}
 
 	public Boolean getReprint() {
 		return reprint;
 	}
 
-	public URI getScryfall_set_uri() {
-		return scryfall_set_uri;
+	public URI getScryfallSetUri() {
+		return scryfallSetUri;
 	}
 
-	public String getSet_id() {
-		return set_id;
+	public String getSetId() {
+		return setId;
 	}
 
-	public String getSet_name() {
-		return set_name;
+	public String getSetName() {
+		return setName;
 	}
 
-	public URI getSet_search_uri() {
-		return set_search_uri;
+	public URI getSetSearchUri() {
+		return setSearchUri;
 	}
 
-	public URI getSet_uri() {
-		return set_uri;
+	public URI getSetUri() {
+		return setUri;
 	}
 
-	public Boolean getStory_spotlight() {
-		return story_spotlight;
+	public Boolean getStorySpotlight() {
+		return storySpotlight;
 	}
 
 	public Preview getPreview() {
@@ -322,16 +379,16 @@ public class CardObject extends CardFaceObject {
 		return booster;
 	}
 
-	public String getCard_back_id() {
-		return card_back_id;
+	public UUID getCardBackId() {
+		return cardBackId;
 	}
 
-	public List<String> getPromo_types() {
-		return promo_types;
+	public List<String> getPromoTypes() {
+		return promoTypes;
 	}
 
-	public String getSet_type() {
-		return set_type;
+	public String getSetType() {
+		return setType;
 	}
 
 	public Boolean getTextless() {
@@ -342,52 +399,90 @@ public class CardObject extends CardFaceObject {
 		return variation;
 	}
 
-	public String getVariation_of() {
-		return variation_of;
+	public UUID getVariationOf() {
+		return variationOf;
 	}
 
 	public List<String> getKeywords() {
 		return keywords;
 	}
 
-	public List<Color> getProduced_mana() {
-		return produced_mana;
+	public List<String> getProducedMana() {
+		return producedMana;
 	}
 
-	public Boolean getContent_warning() {
-		return content_warning;
+	@JsonIgnore
+	public List<Color> getProducedManaEnum() {
+		if (producedMana == null) {
+			return null;
+		}
+		return producedMana.stream().map(Color::fromValue).collect(Collectors.toList());
 	}
 
-	public List<Finish> getFinishes() {
+	public Boolean getContentWarning() {
+		return contentWarning;
+	}
+
+	public List<String> getFinishes() {
 		return finishes;
 	}
 
-	public String getSecurity_stamp() {
-		return security_stamp;
+	public String getSecurityStamp() {
+		return securityStamp;
 	}
 
-	public String getCollector_number() {
-		return collector_number;
+	public String getCollectorNumber() {
+		return collectorNumber;
 	}
 
-	public String getId() {
+	public UUID getId() {
 		return id;
 	}
-	public Integer getMtgo_id() {
-		return mtgo_id;
+
+	public Integer getMtgoId() {
+		return mtgoId;
 	}
-	public Integer getMultiverse_id() {
-		return multiverse_id;
-	}
+
 	public String getSet() {
 		return set;
 	}
 
-	public List<String> getArtist_ids() {
-		return artist_ids;
+	public Integer getTcgplayerEtchedId() {
+		return tcgplayerEtchedId;
 	}
-	public Integer getTcgplayer_etched_id() {
-		return tcgplayer_etched_id;
+
+	public Integer getPennyRank() {
+		return pennyRank;
+	}
+
+	/**
+	 * Use {@link #getFinishes()}
+	 *
+	 * @return true if there is a foil version for this card
+	 */
+	@Deprecated
+	public Boolean getFoil() {
+		return foil;
+	}
+
+	/**
+	 * Use {@link #getFinishes()}
+	 *
+	 * @return true if there is no foil version for this card
+	 */
+	@Deprecated
+	public Boolean getNonfoil() {
+		return nonfoil;
+	}
+
+	/**
+	 * Not in documentation
+	 *
+	 * @return the id of the artist of this card
+	 */
+	@Deprecated
+	public List<UUID> getArtist_ids() {
+		return artist_ids;
 	}
 
 }

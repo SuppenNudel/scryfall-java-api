@@ -1,28 +1,31 @@
 package de.rohmio.mtg.scryfall.api.model;
 
 import java.net.URI;
+import java.util.UUID;
 
-import de.rohmio.mtg.scryfall.api.model.enums.ComponentType;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class RelatedCardObject extends ScryfallObject {
-	
-	private String id;
-	private ComponentType component;
+
+	private UUID id;
+	// private String object; -> ScryfallObject
+	private String component;
 	private String name;
-	private String type_line;
+	@JsonProperty("type_line")
+	private String typeLine;
 	private URI uri;
-	
-	public String getId() {
+
+	public UUID getId() {
 		return id;
 	}
-	public ComponentType getComponent() {
+	public String getComponent() {
 		return component;
 	}
 	public String getName() {
 		return name;
 	}
-	public String getType_line() {
-		return type_line;
+	public String getTypeLine() {
+		return typeLine;
 	}
 	public URI getUri() {
 		return uri;

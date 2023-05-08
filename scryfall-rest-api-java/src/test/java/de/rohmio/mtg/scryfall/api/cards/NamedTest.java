@@ -10,7 +10,7 @@ import de.rohmio.mtg.scryfall.api.model.CardObject;
 import de.rohmio.mtg.scryfall.api.model.ScryfallError;
 
 public class NamedTest {
-	
+
 	@Test
 	public void test() throws ScryfallError {
 		NamedEndpoint fuzzyCardEndpoint = ScryfallApi.cards.fuzzyNamed("Lightning Bolt");
@@ -19,9 +19,9 @@ public class NamedTest {
 		NamedEndpoint exactCardEndpoint = ScryfallApi.cards.exactNamed("Lightning Bolt");
 		CardObject cardByExactName = exactCardEndpoint.get();
 		assertEquals("Lightning Bolt", cardByExactName.getName());
-		
+
 	}
-	
+
 	@Test
 	public void builderTest() throws ScryfallError {
 		NamedEndpoint cards = ScryfallApi.cards.exactNamed("Lightning Bolt").set("M11");
@@ -29,5 +29,5 @@ public class NamedTest {
 		assertEquals("Lightning Bolt", card.getName());
 		assertEquals("card", card.getObject());
 	}
-	
+
 }

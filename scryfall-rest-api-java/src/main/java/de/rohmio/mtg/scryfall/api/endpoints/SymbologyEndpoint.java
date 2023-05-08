@@ -11,5 +11,5 @@ public class SymbologyEndpoint extends AbstractEndpoint<ListObject<CardSymbolObj
 	public SymbologyEndpoint() {
 		super("/symbology", new GenericType<ListObject<CardSymbolObject>>() {});
 	}
-	
+
 }

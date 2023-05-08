@@ -10,7 +10,7 @@ import de.rohmio.mtg.scryfall.api.model.ListObject;
 import de.rohmio.mtg.scryfall.api.model.ScryfallError;
 
 public abstract class PagedAbstractEndpoint<T> extends AbstractEndpoint<ListObject<T>> {
-	
+
 	protected PagedAbstractEndpoint(String path, GenericType<ListObject<T>> resultType) {
 		super(path, resultType);
 	}
@@ -20,19 +20,22 @@ public abstract class PagedAbstractEndpoint<T> extends AbstractEndpoint<ListObje
 	}
 
 	public abstract PagedAbstractEndpoint<T> page(int page);
-	
+
 	public List<T> getAll() throws ScryfallError {
 		List<T> list = new ArrayList<>();
 		ListObject<T> listObject = null;
-		for(int page = 1; listObject == null || listObject.getHas_more(); ++page) {
+		for(int page = 1; listObject == null || listObject.hasMore(); ++page) {
 			listObject = page(page).get();
 			list.addAll(listObject.getData());
+			int current = list.size();
+			int total = listObject.getTotalCards();
+			System.out.println(String.format("%.2f%% (%s / %s)", 100.0*current/total, current, total)); ;
 		}
 		return list;
 	}
 	public void getAll(Consumer<List<T>> consumer) throws ScryfallError {
 		ListObject<T> listObject = null;
-		for(int page = 1; listObject == null || listObject.getHas_more(); ++page) {
+		for(int page = 1; listObject == null || listObject.hasMore(); ++page) {
 			listObject = page(page).get();
 			consumer.accept(listObject.getData());
 		}

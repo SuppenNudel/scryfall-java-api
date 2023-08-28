@@ -166,6 +166,9 @@ public class CardFaceObject extends ScryfallObject {
 
 	@JsonIgnore
 	public List<String> getTypes() {
+		if(typeLine == null) {
+			System.err.println();
+		}
 		return Arrays.asList(typeLine.replace("— ", "").split(" "));
 	}
 

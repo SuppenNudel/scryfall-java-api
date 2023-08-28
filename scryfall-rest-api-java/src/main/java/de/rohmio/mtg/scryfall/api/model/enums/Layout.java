@@ -44,5 +44,9 @@ public enum Layout {
 	@JsonProperty("art_series")
 	ART_SERIES,
 	@JsonProperty("reversible_card")
-	REVERSIBLE_CARD;
+	REVERSIBLE_CARD,
+	@JsonProperty("prototype")
+	PROTOTYPE,
+	@JsonProperty("mutate")
+	MUTATE;
 }
